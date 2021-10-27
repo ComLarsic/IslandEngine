@@ -1,0 +1,9 @@
+{
+    "sprites": [
+        {
+            "name": "example_sprite",
+            "path": "examples/example_sprite.png",
+            "filter": "nearest"
+        }
+    ]
+}
