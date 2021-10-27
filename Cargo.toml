@@ -11,7 +11,6 @@ macroquad = "0.3"
 egui-macroquad = "0.6.1"
 egui = "0.14.2"
 lazy_static = "1.4.0"
-zip = "0.5"
 hashbrown = "0.11"
 
 [dependencies.pyo3]

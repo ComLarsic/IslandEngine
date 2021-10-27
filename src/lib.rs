@@ -1,5 +1,3 @@
-use std::path::PathBuf;
-
 use assets::load_assets;
 use ecs::World;
 use error::IslandResult;
@@ -7,7 +5,7 @@ use macroquad::prelude::*;
 use prelude::ecs::plugin::Plugin;
 use pyo3::Python;
 
-use crate::{debug::menu::DebugMenu, error::IslandError};
+use crate::debug::menu::DebugMenu;
 
 pub mod assets;
 pub mod debug;
