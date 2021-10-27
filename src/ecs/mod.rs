@@ -246,7 +246,10 @@ impl<'a> World<'a> {
         })?;
 
         // Create the context
-        let ctx = PyCell::new(self.py, ctx::HighgroundCtx::new()).map_err(|e| {
+        let ctx = PyCell::new(self.py, ctx::HighgroundCtx {
+            world_state: self.state,
+            spawned_entities: vec![],
+        }).map_err(|e| {
             return IslandError::new(format!("Failed to create highground ctx: {}", e));
         })?;
 
@@ -267,7 +270,7 @@ impl<'a> World<'a> {
     }
 
     /** Handle the highground context after its been returned */
-    pub fn handle_context(&mut self, ctx: PyRef<ctx::HighgroundCtx>) -> IslandResult<()> {
+    pub(crate) fn handle_context(&mut self, ctx: PyRef<ctx::HighgroundCtx>) -> IslandResult<()> {
         // Spawn the entities
         for entity in &ctx.spawned_entities {
             // Strange if-block to prevent the compiler from complaining because i am not using the error

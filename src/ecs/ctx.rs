@@ -4,21 +4,17 @@ use pyo3::prelude::*;
 
 use crate::{error, info, warn};
 
+use super::WorldState;
+
 /** The context that gets passed into the python scripts */
 #[pyclass]
-pub struct HighgroundCtx {
+pub(crate) struct HighgroundCtx {
+    pub(crate) world_state: WorldState,
     pub(crate) spawned_entities: Vec<JsonValue>,
 }
 
 #[pymethods]
 impl HighgroundCtx {
-    #[new]
-    pub fn new() -> Self {
-        return Self {
-            spawned_entities: vec![],
-        };
-    }
-
     // Timing info
 
     /** Get the delta time */
@@ -74,6 +70,7 @@ impl HighgroundCtx {
     }
 
     // Scene manipulation
+    /** Spawn an entity in the scene */
     pub fn spawn_entity(&mut self, entity_input: String) -> PyResult<()> {
         if let Ok(entity) = json::parse(&entity_input).map_err(|e| {
             error!("Failed to spawn entity: {}", e);
@@ -82,6 +79,15 @@ impl HighgroundCtx {
             self.spawned_entities.push(entity);
         }
         return Ok(());
+    }
+
+    /** Get the world state */
+    pub fn world_state(&self) -> PyResult<String> {
+        return Ok(match self.world_state {
+            WorldState::Editor => "Editor",
+            WorldState::Menu => "Menu",
+            WorldState::Gameplay => "Gameplay",
+        }.into());
     }
 }
 
